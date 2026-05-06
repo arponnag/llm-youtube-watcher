@@ -2,6 +2,9 @@
 
 Automated pipeline that monitors popular LLM-focused YouTube channels, extracts what speakers actually say from captions/transcripts, classifies LLM topics, and publishes a continuously updated public table.
 
+## Notes:
+It's recommended to run this locally.
+
 ## Problem Fit
 
 This implementation satisfies the brief by delivering:
