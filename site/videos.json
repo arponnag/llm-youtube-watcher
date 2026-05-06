@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-05-06T16:38:29.597840+00:00",
+  "generated_at_utc": "2026-05-06T18:16:13.919548+00:00",
   "row_count": 10,
   "quality_metrics": {
     "transcript_coverage": 1.0,
@@ -7,8 +7,7 @@
       "yt_dlp_subtitles": 10
     },
     "summary_source_counts": {
-      "deepseek": 9,
-      "fallback": 1
+      "deepseek": 10
     },
     "relation_source_counts": {
       "inferred_llm": 10
@@ -21,7 +20,7 @@
       "channel_name": "Yannic Kilcher",
       "channel_handle": "@YannicKilcher",
       "speaker": "Yannic Kilcher",
-      "relation_to_llm_ecosystem": "Yannic Kilcher's channel explores practical LLM ecosystem themes through hands-on projects like building multimodal tools and discussing agents, RAG, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Yannic Kilcher explores practical LLM ecosystem themes like multimodal agents, RAG, and open source infrastructure through hands-on projects and analysis.",
       "configured_relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
       "relation_source": "inferred_llm",
       "video_id": "xHi8PUIVyoo",
@@ -36,7 +35,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The creator demonstrates running large models locally on an Nvidia DGX Spark, chaining them to create an automatic mansplainer, but notes suboptimal setup causes noticeable lag.",
+      "summary": "The creator showcases running local LLMs on an Nvidia DGX Spark, building a real-time automated mansplainer, but notes suboptimal chaining causes noticeable lag.",
       "summary_source": "deepseek",
       "transcript_excerpt": "Hello. Have you ever been in a situation Hello. Have you ever been in a situation Hello. Have you ever been in a situation where you're overhearing conversation where you're overhearing conversation where you're overhearing conversation and it dawns on you this person well and it dawns on you this person well and it dawns on you this person well intended is wrong about something intended is wrong about something intended is wrong about something minuscule but important to you and duty. minuscule but important to you and duty. minuscule but important to you and duty. The universe compels you to tell them The universe compels you to tell them The universe compels you to tell them why they're wrong. Watch this. I recycle why they're wrong. Watch this. I recycle why they're wrong. Watch this. "
     },
@@ -44,7 +43,7 @@
       "channel_name": "Yannic Kilcher",
       "channel_handle": "@YannicKilcher",
       "speaker": "Yannic Kilcher",
-      "relation_to_llm_ecosystem": "Yannic Kilcher's channel explores practical LLM ecosystem themes through hands-on projects like building multimodal tools and discussing agents, RAG, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Yannic Kilcher explores practical LLM ecosystem themes like multimodal agents, RAG, and open source infrastructure through hands-on projects and analysis.",
       "configured_relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
       "relation_source": "inferred_llm",
       "video_id": "Dr6jw-WAd9E",
@@ -59,7 +58,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker says the stream involves no AI, just old-fashioned human Minecraft gameplay.",
+      "summary": "The speaker says he is terrible at Minecraft and is streaming for fun, not skill, starting a new world for the holidays.",
       "summary_source": "deepseek",
       "transcript_excerpt": "Cool. Hello everyone. Um, Hello everyone. Um, Hello everyone. Um, as is tradition, uh, we're doing a as is tradition, uh, we're doing a as is tradition, uh, we're doing a Minecraft live stream for the holidays. Minecraft live stream for the holidays. Minecraft live stream for the holidays. Um, because it's fun. Um, because it's fun. Um, because it's fun. So, So, So, uh, yeah, keep in mind I am absolutely uh, yeah, keep in mind I am absolutely uh, yeah, keep in mind I am absolutely terrible at Minecraft. This is, so this terrible at Minecraft. This is, so this terrible at Minecraft. This is, so this is not a like, uh, a demonstration of is not a like, uh, a demonstration of is not a like, uh, a demonstration of skill or anything like this. Um, it's skill or anything like this. Um, it's skil"
     },
@@ -67,7 +66,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "EWvNQjAaOHw",
@@ -82,7 +81,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker introduces practical LLM usage, highlighting ChatGPT as the original but noting a rich ecosystem of alternatives and leaderboards for tracking models.",
+      "summary": "The speaker explains how to practically use LLMs like ChatGPT, showing leaderboards to compare models and demonstrating basic text interaction.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so in this video I would hi everyone so in this video I would hi everyone so in this video I would like to continue our general audience like to continue our general audience like to continue our general audience series on large language models like series on large language models like series on large language models like chpd now in the previous video deep dive chpd now in the previous video deep dive chpd now in the previous video deep dive into llms that you can find on my into llms that you can find on my into llms that you can find on my YouTube we went into a lot of the YouTube we went into a lot of the YouTube we went into a lot of the underhood fundamentals of how these underhood fundamentals of how these underhood fundamentals of how these models are trained and how yo"
     },
@@ -90,7 +89,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "7xTGNNLPyMI",
@@ -105,15 +104,15 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "hi everyone so I've wanted to make this hi everyone so I've wanted to make this hi everyone so I've wanted to make this video for a while it is a comprehensive video for a while it is a comprehensive video for a while it is a comprehensive but General audience...",
-      "summary_source": "fallback",
+      "summary": "The speaker explains that building an LLM starts with pre-training on a filtered, diverse dataset of internet text, like the 44-terabyte FineWeb dataset from Common Crawl.",
+      "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so I've wanted to make this hi everyone so I've wanted to make this hi everyone so I've wanted to make this video for a while it is a comprehensive video for a while it is a comprehensive video for a while it is a comprehensive but General audience introduction to but General audience introduction to but General audience introduction to large language models like Chachi PT and large language models like Chachi PT and large language models like Chachi PT and what I'm hoping to achieve in this video what I'm hoping to achieve in this video what I'm hoping to achieve in this video is to give you kind of mental models for is to give you kind of mental models for is to give you kind of mental models for thinking through what it is that this thinking through what it is that this thin"
     },
     {
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "l8pRSuU81PU",
@@ -128,7 +127,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker explains that reproducing the GPT-2 124M model, released by OpenAI in 2019, is now doable in under an hour for about $10.",
+      "summary": "The speaker explains they will reproduce the GPT-2 (124M) model, noting it's now doable in an hour for $10, unlike five years ago.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so today we are going to be hi everyone so today we are going to be hi everyone so today we are going to be continuing our Zero to Hero series and continuing our Zero to Hero series and continuing our Zero to Hero series and in particular today we are going to in particular today we are going to in particular today we are going to reproduce the gpt2 model the 124 million reproduce the gpt2 model the 124 million reproduce the gpt2 model the 124 million version of it so when openi released version of it so when openi released version of it so when openi released gpt2 this was 2019 and they released it gpt2 this was 2019 and they released it gpt2 this was 2019 and they released it with this blog post on top of that they with this blog post on top of that they with this blog post o"
     },
@@ -136,7 +135,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "zduSFxRajkE",
@@ -151,7 +150,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker says tokenization is his least favorite part of LLMs, but it's necessary to understand because it's \"hairy, gnarly,\" and full of hidden issues.",
+      "summary": "The speaker says tokenization is their least favorite part of LLMs, necessary to understand due to hidden complexities and footguns.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so in this video I'd like us hi everyone so in this video I'd like us hi everyone so in this video I'd like us to cover the process of tokenization in to cover the process of tokenization in to cover the process of tokenization in large language models now you see here large language models now you see here large language models now you see here that I have a set face and that's that I have a set face and that's that I have a set face and that's because uh tokenization is my least because uh tokenization is my least because uh tokenization is my least favorite part of working with large favorite part of working with large favorite part of working with large language models but unfortunately it is language models but unfortunately it is language models but unfortunately it is ne"
     },
@@ -159,7 +158,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "zjkBMFhNj_g",
@@ -174,7 +173,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "An LLM like Llama 2 is just two files: a parameters file and a short code file to run it, no internet needed.",
+      "summary": "A large language model is just two files: a parameters file (weights) and a code file that runs the neural network.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so recently I gave a hi everyone so recently I gave a hi everyone so recently I gave a 30-minute talk on large language models 30-minute talk on large language models 30-minute talk on large language models just kind of like an intro talk um just kind of like an intro talk um just kind of like an intro talk um unfortunately that talk was not recorded unfortunately that talk was not recorded unfortunately that talk was not recorded but a lot of people came to me after the but a lot of people came to me after the but a lot of people came to me after the talk and they told me that uh they talk and they told me that uh they talk and they told me that uh they really liked the talk so I would just I really liked the talk so I would just I really liked the talk so I would just I thoug"
     },
@@ -182,7 +181,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "kCc8FmEb1nY",
@@ -197,7 +196,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker explains that ChatGPT is a probabilistic language model built on the Transformer architecture from the 2017 \"Attention is All You Need\" paper.",
+      "summary": "The speaker introduces ChatGPT as a probabilistic language model, explains its Transformer-based architecture from the 2017 paper, and proposes building one from scratch.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so by now you have probably hi everyone so by now you have probably hi everyone so by now you have probably heard of chat GPT it has taken the world heard of chat GPT it has taken the world heard of chat GPT it has taken the world and AI Community by storm and it is a and AI Community by storm and it is a and AI Community by storm and it is a system that allows you to interact with system that allows you to interact with system that allows you to interact with an AI and give it text based tasks so an AI and give it text based tasks so an AI and give it text based tasks so for example we can ask chat GPT to write for example we can ask chat GPT to write for example we can ask chat GPT to write us a small Hau about how important it is us a small Hau about how important it is us a"
     },
@@ -205,7 +204,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "t3YJ5hKiMQ0",
@@ -220,7 +219,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker aims to complexify their MLP character language model into a deeper WaveNet-like architecture that progressively fuses more input characters.",
+      "summary": "The speaker explains they will complexify their character-level language model into a WaveNet to handle longer input sequences and deeper information fusion.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone today we are continuing our hi everyone today we are continuing our hi everyone today we are continuing our implementation of make more our favorite implementation of make more our favorite implementation of make more our favorite character level language model character level language model character level language model now you'll notice that the background now you'll notice that the background now you'll notice that the background behind me is different that's because I behind me is different that's because I behind me is different that's because I am in Kyoto and it is awesome so I'm in am in Kyoto and it is awesome so I'm in am in Kyoto and it is awesome so I'm in a hotel room here a hotel room here a hotel room here now over the last few lectures we've now over the last f"
     },
@@ -228,7 +227,7 @@
       "channel_name": "Andrej Karpathy",
       "channel_handle": "@AndrejKarpathy",
       "speaker": "Andrej Karpathy",
-      "relation_to_llm_ecosystem": "Andrej Karpathy's channel provides hands-on, deep technical tutorials on building, training, and applying LLMs, covering RAG, agents, and fine-tuning.",
+      "relation_to_llm_ecosystem": "Andrej Karpathy's channel offers practical, code-focused explorations of LLM architecture, training, and deployment, including agents, RAG, and fine-tuning.",
       "configured_relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
       "relation_source": "inferred_llm",
       "video_id": "q8SA3rM6ckI",
@@ -243,7 +242,7 @@
       ],
       "transcript_available": true,
       "transcript_source": "yt_dlp_subtitles",
-      "summary": "The speaker argues that backpropagation is a \"leaky abstraction,\" urging manual implementation to avoid subtle bugs from relying solely on PyTorch's autograd.",
+      "summary": "The speaker argues that relying solely on PyTorch's autograd is insufficient, as backpropagation is a leaky abstraction requiring manual understanding to avoid subtle bugs.",
       "summary_source": "deepseek",
       "transcript_excerpt": "hi everyone so today we are once again hi everyone so today we are once again hi everyone so today we are once again continuing our implementation of make continuing our implementation of make continuing our implementation of make more now so far we've come up to here more now so far we've come up to here more now so far we've come up to here montalia perceptrons and our neural net montalia perceptrons and our neural net montalia perceptrons and our neural net looked like this and we were looked like this and we were looked like this and we were implementing this over the last few implementing this over the last few implementing this over the last few lectures lectures lectures now I'm sure everyone is very excited to now I'm sure everyone is very excited to now I'm sure everyone is very e"
     }
