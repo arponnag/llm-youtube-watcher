@@ -62,15 +62,27 @@ Use this if you want a clean, repeatable setup from scratch:
 # 1) Move into the project
 cd I:\Project
 
-# 2) Create and activate virtual environment
+# 2) Create and activate virtual environment (first run only)
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
-# 3) Install dependencies
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+# 3) Add your API key for this terminal session
+$env:DEEPSEEK_API_KEY="your_real_key_here"
 
-# 4) Run pipeline and build site
+# 4) One-command local run (installs deps, builds dataset + site)
+.\run-local.ps1 -DeepSeekApiKey $env:DEEPSEEK_API_KEY
+```
+
+If PowerShell blocks script execution:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+Manual alternative (without wrapper script):
+
+```powershell
+python -m pip install -r requirements.txt
 python src/pipeline.py
 python src/build_site.py
 ```
@@ -157,6 +169,24 @@ Workflow: `.github/workflows/update-and-deploy.yml`
    - Add repo secret `DEEPSEEK_API_KEY` (recommended)
 3. Run workflow **Update LLM Watcher and Deploy** once manually.
 4. Use the workflow output URL as the live public page.
+
+## GitHub Pages Reliability Notes
+
+If the GitHub Pages site looks stale, blank, or inconsistent, common causes are:
+
+- Pages is serving an older artifact due to deployment lag/caching.
+- The workflow succeeded at build steps but deployment step failed or timed out.
+- `data/videos.json` was not refreshed (pipeline failed silently on upstream network/API issues).
+- API-dependent steps fell back to non-LLM behavior, reducing output quality and making content appear "wrong" rather than "broken".
+- Browser cache/CDN cache still serves an earlier `site/videos.json`.
+
+What we already tried in this project:
+
+- Added transcript fallback via `yt-dlp` so runs continue when direct transcript APIs fail.
+- Added quality metrics (`transcript_coverage`, source counts) in `data/videos.json` to make failures visible.
+- Kept strict mode configurable (`FAIL_ON_LOW_TRANSCRIPT_COVERAGE`) so CI can fail on low coverage when needed.
+- Confirmed local end-to-end generation works (`pipeline.py` + `build_site.py`) and produces fresh `site/` artifacts.
+- Kept GitHub Actions deployment as the Pages source and documented manual rerun as a recovery path.
 
 ## GitHub Push Setup (Common Fix)
 
