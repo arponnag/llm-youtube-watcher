@@ -155,19 +155,6 @@ def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
     if not api_key or len(transcript_text) < 100:
         return "", "none"
     client = OpenAI(api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
-
-
-def topics_from_text(text: str, title: str) -> List[str]:
-    haystack = f"{title}\n{text}".lower()
-    matches = []
-    for topic, keywords in TOPIC_KEYWORDS.items():
-        if any(keyword in haystack for keyword in keywords):
-            matches.append(topic)
-    if not matches:
-        matches.append("General LLM Commentary")
-    return matches[:4]
-
-
     clip = transcript_text[:10000]
     prompt = (
         "You summarize creator commentary on LLM topics.\n"
@@ -190,11 +177,94 @@ def topics_from_text(text: str, title: str) -> List[str]:
         return "", "none"
 
 
+def topics_from_text(text: str, title: str) -> List[str]:
+    haystack = f"{title}\n{text}".lower()
+    matches = []
+    for topic, keywords in TOPIC_KEYWORDS.items():
+        if any(keyword in haystack for keyword in keywords):
+            matches.append(topic)
+    if not matches:
+        matches.append("General LLM Commentary")
+    return matches[:4]
+
+
+def infer_topics_with_llm(transcript_text: str, title: str) -> List[str]:
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    if not api_key:
+        return []
+    client = OpenAI(api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
+    clip = transcript_text[:3500]
+    allowed = list(TOPIC_KEYWORDS.keys())
+    prompt = (
+        "Classify this video into up to 4 topics from the allowed list.\n"
+        f"Allowed topics: {', '.join(allowed)}\n"
+        f"Title: {title}\n"
+        f"Transcript excerpt: {clip}\n\n"
+        'Return strict JSON only in this shape: {"topics":["Topic A","Topic B"]}'
+    )
+    try:
+        resp = client.responses.create(
+            model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
+            input=prompt,
+            temperature=0.2,
+            max_output_tokens=100,
+        )
+        parsed = json.loads((resp.output_text or "").strip() or "{}")
+        raw_topics = parsed.get("topics", [])
+        if not isinstance(raw_topics, list):
+            return []
+        filtered = [t for t in raw_topics if isinstance(t, str) and t in TOPIC_KEYWORDS]
+        deduped = []
+        for topic in filtered:
+            if topic not in deduped:
+                deduped.append(topic)
+        return deduped[:4]
+    except Exception:
+        return []
+
+
 def fallback_summary(transcript_text: str, title: str, topics: List[str]) -> str:
     if transcript_text:
         sentence = transcript_text[:260].replace("\n", " ").strip()
         return f"{sentence}..."
     return f"Discusses {', '.join(topics[:2])} in the context of '{title}'."
+
+
+def infer_channel_relations(rows: List[dict]) -> Dict[str, str]:
+    grouped: Dict[str, List[dict]] = {}
+    for row in rows:
+        grouped.setdefault(row.get("channel_name", ""), []).append(row)
+    inferred: Dict[str, str] = {}
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    if not api_key:
+        return inferred
+    client = OpenAI(api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
+    for channel_name, channel_rows in grouped.items():
+        sample = channel_rows[:6]
+        sample_lines = []
+        for row in sample:
+            topics = ", ".join(row.get("topics", [])[:3])
+            sample_lines.append(f"- {row.get('video_title', '')} | topics: {topics}")
+        prompt = (
+            "Write one concise sentence (max 26 words) describing how this YouTube channel relates to LLM themes.\n"
+            f"Channel: {channel_name}\n"
+            "Recent videos:\n"
+            f"{chr(10).join(sample_lines)}\n\n"
+            "Focus on practical relation to LLM ecosystem themes."
+        )
+        try:
+            resp = client.responses.create(
+                model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
+                input=prompt,
+                temperature=0.2,
+                max_output_tokens=70,
+            )
+            text = re.sub(r"\s+", " ", (resp.output_text or "").strip())
+            if text:
+                inferred[channel_name] = text
+        except Exception:
+            continue
+    return inferred
 
 
 def normalize_entry(channel: Channel, item: dict) -> dict:
@@ -203,7 +273,9 @@ def normalize_entry(channel: Channel, item: dict) -> dict:
     transcript_text, transcript_source = fetch_transcript_text(video_id)
     if not transcript_text:
         transcript_text, transcript_source = fetch_transcript_with_ytdlp(video_url, video_id)
-    topics = topics_from_text(transcript_text, item.get("title", ""))
+    topics = infer_topics_with_llm(transcript_text, item.get("title", "")) or topics_from_text(
+        transcript_text, item.get("title", "")
+    )
     ai_summary, summary_source = summarize_with_llm(transcript_text, item.get("title", ""))
     summary = ai_summary or fallback_summary(transcript_text, item.get("title", ""), topics)
     effective_summary_source = summary_source if ai_summary else "fallback"
@@ -246,6 +318,11 @@ def run() -> None:
                         "error": str(exc),
                     }
                 )
+    inferred_relations = infer_channel_relations(rows)
+    for row in rows:
+        row["relation_to_llm_ecosystem"] = inferred_relations.get(
+            row.get("channel_name", ""), row.get("relation_to_llm_ecosystem", "")
+        )
     rows.sort(key=lambda x: x.get("published", ""), reverse=True)
     payload = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),

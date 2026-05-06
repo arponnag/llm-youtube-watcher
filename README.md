@@ -20,8 +20,9 @@ This implementation satisfies the brief by delivering:
    - Try YouTube captions via `youtube-transcript-api`
    - Fallback to `yt-dlp` subtitle extraction when captions are unavailable
 4. **Derive analytics**
-   - Topic tags from transcript/title keyword map
-  - Transcript-aware short summary (DeepSeek by default; fallback heuristic)
+   - Topic tags inferred by DeepSeek (keyword fallback if inference fails)
+   - Channel-to-LLM relation sentence inferred from each channel's recent videos
+   - Transcript-aware short summary (DeepSeek by default; fallback heuristic)
 5. **Publish artifacts**
    - `data/videos.json` (normalized data)
    - `site/index.html` + `site/videos.json` (public view + supporting payload)
