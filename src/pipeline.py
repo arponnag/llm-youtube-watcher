@@ -28,6 +28,9 @@ MAX_TOTAL_VIDEOS = int(os.getenv("MAX_TOTAL_VIDEOS", "10"))
 MIN_TRANSCRIPT_CHARS = int(os.getenv("MIN_TRANSCRIPT_CHARS", "120"))
 MIN_TRANSCRIPT_COVERAGE = float(os.getenv("MIN_TRANSCRIPT_COVERAGE", "0.6"))
 FAIL_ON_LOW_TRANSCRIPT_COVERAGE = os.getenv("FAIL_ON_LOW_TRANSCRIPT_COVERAGE", "0") == "1"
+CI_NO_SCRAPE_MODE = os.getenv("CI_NO_SCRAPE_MODE", "0") == "1"
+REQUIRE_TRANSCRIPT_FOR_ROW = os.getenv("REQUIRE_TRANSCRIPT_FOR_ROW", "0") == "1"
+MIN_TRANSCRIPT_BACKED_ROWS = int(os.getenv("MIN_TRANSCRIPT_BACKED_ROWS", "1"))
 YTDLP_COOKIES_FILE = os.getenv("YTDLP_COOKIES_FILE", "").strip()
 
 TOPIC_KEYWORDS: Dict[str, List[str]] = {
@@ -105,6 +108,8 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
     Fetches subtitles via yt-dlp when youtube-transcript-api is unavailable.
     Returns (transcript_text, transcript_source).
     """
+    if CI_NO_SCRAPE_MODE:
+        return "", "none"
     subtitles_dir = DATA_DIR / "tmp_subtitles"
     subtitles_dir.mkdir(parents=True, exist_ok=True)
     subtitle_template = subtitles_dir / f"{video_id}.%(ext)s"
@@ -405,7 +410,10 @@ def run() -> None:
             if len(rows) >= MAX_TOTAL_VIDEOS:
                 break
             try:
-                rows.append(normalize_entry(channel, item))
+                row = normalize_entry(channel, item)
+                if REQUIRE_TRANSCRIPT_FOR_ROW and not row.get("transcript_available"):
+                    continue
+                rows.append(row)
             except Exception as exc:
                 rows.append(
                     {
@@ -473,6 +481,10 @@ def run() -> None:
     if FAIL_ON_LOW_TRANSCRIPT_COVERAGE and transcript_coverage < MIN_TRANSCRIPT_COVERAGE:
         raise RuntimeError(
             f"Transcript coverage {transcript_coverage:.1%} below threshold {MIN_TRANSCRIPT_COVERAGE:.1%}"
+        )
+    if REQUIRE_TRANSCRIPT_FOR_ROW and len(valid_rows) < MIN_TRANSCRIPT_BACKED_ROWS:
+        raise RuntimeError(
+            f"Transcript-backed rows {len(valid_rows)} below minimum required {MIN_TRANSCRIPT_BACKED_ROWS}"
         )
 
 

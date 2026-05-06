@@ -178,7 +178,6 @@ Workflow: `.github/workflows/update-and-deploy.yml`
 2. In repository settings:
    - Pages source = **GitHub Actions**
    - Add repo secret `DEEPSEEK_API_KEY` (recommended)
-   - Optional but recommended for CI transcript stability: add `YTDLP_COOKIES` (contents of a valid `cookies.txt` export for YouTube)
 3. Run workflow **Update LLM Watcher and Deploy** once manually.
 4. Use the workflow output URL as the live public page.
 
@@ -195,9 +194,9 @@ If the GitHub Pages site looks stale, blank, or inconsistent, common causes are:
 What we already tried in this project:
 
 - Added transcript fallback via `yt-dlp` so runs continue when direct transcript APIs fail.
-- Added optional `YTDLP_COOKIES` support in CI to reduce YouTube bot/rate-limit failures on GitHub-hosted runners.
 - Added quality metrics (`transcript_coverage`, source counts) in `data/videos.json` to make failures visible.
 - Enforced CI quality gate (`FAIL_ON_LOW_TRANSCRIPT_COVERAGE=1`) so low-coverage datasets fail the workflow instead of deploying.
+- Production CI now runs in no-scrape mode (`CI_NO_SCRAPE_MODE=1`) and keeps only transcript-backed rows (`REQUIRE_TRANSCRIPT_FOR_ROW=1`), with a minimum transcript-backed row threshold.
 - Kept strict mode configurable (`FAIL_ON_LOW_TRANSCRIPT_COVERAGE`) so CI can fail on low coverage when needed.
 - Confirmed local end-to-end generation works (`pipeline.py` + `build_site.py`) and produces fresh `site/` artifacts.
 - Kept GitHub Actions deployment as the Pages source and documented manual rerun as a recovery path.

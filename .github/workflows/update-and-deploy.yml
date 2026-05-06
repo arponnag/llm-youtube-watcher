@@ -25,25 +25,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Prepare optional yt-dlp cookies
-        env:
-          YTDLP_COOKIES: ${{ secrets.YTDLP_COOKIES }}
-        run: |
-          mkdir -p .tmp
-          if [ -n "${YTDLP_COOKIES:-}" ]; then
-            printf '%s\n' "$YTDLP_COOKIES" > .tmp/ytdlp_cookies.txt
-            echo "YTDLP_COOKIES_FILE=.tmp/ytdlp_cookies.txt" >> "$GITHUB_ENV"
-            echo "yt-dlp cookies file prepared."
-          else
-            echo "::warning::YTDLP_COOKIES secret is empty; YouTube may block transcript extraction on GitHub-hosted runners."
-          fi
-
       - name: Run watcher pipeline
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DEEPSEEK_MODEL: deepseek-v4-flash
           MAX_VIDEOS_PER_CHANNEL: 8
           MAX_TOTAL_VIDEOS: 10
+          CI_NO_SCRAPE_MODE: 1
+          REQUIRE_TRANSCRIPT_FOR_ROW: 1
+          MIN_TRANSCRIPT_BACKED_ROWS: 5
           FAIL_ON_LOW_TRANSCRIPT_COVERAGE: 1
           MIN_TRANSCRIPT_COVERAGE: 0.6
         run: python src/pipeline.py
