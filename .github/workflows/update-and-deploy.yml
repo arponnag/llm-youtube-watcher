@@ -28,7 +28,7 @@ jobs:
       - name: Run watcher pipeline
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          DEEPSEEK_MODEL: deepseek-chat
+          DEEPSEEK_MODEL: deepseek-v4-flash
           MAX_VIDEOS_PER_CHANNEL: 8
         run: python src/pipeline.py
 

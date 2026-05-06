@@ -126,7 +126,7 @@ python -m unittest discover -s tests -p "test_*.py"
 - Channel list: `channels.yaml`
 - Environment variables:
   - `DEEPSEEK_API_KEY` (recommended default provider)
-  - `DEEPSEEK_MODEL` (optional, default `deepseek-chat`)
+  - `DEEPSEEK_MODEL` (optional, default `deepseek-v4-flash`)
   - `DEEPSEEK_BASE_URL` (optional, default `https://api.deepseek.com`)
   - `MAX_VIDEOS_PER_CHANNEL` (optional, default `8`)
   - `MIN_TRANSCRIPT_CHARS` (optional, default `120`; below this, summary is marked insufficient)

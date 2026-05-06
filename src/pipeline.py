@@ -184,7 +184,7 @@ def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
     )
     try:
         resp = client.responses.create(
-            model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
+            model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
             input=prompt,
             temperature=0.2,
             max_output_tokens=100,
@@ -223,7 +223,7 @@ def infer_topics_with_llm(transcript_text: str, title: str) -> List[str]:
     )
     try:
         resp = client.responses.create(
-            model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
+            model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
             input=prompt,
             temperature=0.2,
             max_output_tokens=100,
@@ -273,7 +273,7 @@ def infer_channel_relations(rows: List[dict]) -> Dict[str, str]:
         )
         try:
             resp = client.responses.create(
-                model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
+                model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
                 input=prompt,
                 temperature=0.2,
                 max_output_tokens=70,
