@@ -36,6 +36,8 @@ Key fields written to `data/videos.json`:
 
 - `channel_name`, `channel_handle`, `speaker`
 - `relation_to_llm_ecosystem`
+- `configured_relation_to_llm_ecosystem` (seed text from `channels.yaml`, retained for auditability)
+- `relation_source` (`inferred_llm`, `inferred_fallback`, or `configured_seed`)
 - `video_id`, `video_title`, `video_url`, `published`
 - `topics` (list)
 - `transcript_available`, `transcript_source`
@@ -224,6 +226,15 @@ This avoids SSH-key setup and works with standard GitHub sign-in/token auth.
 - likely causes: captions unavailable, region/video restrictions, transient fetch issues
 - action: rerun pipeline; `yt-dlp` subtitle fallback is applied automatically (English first, then all available subtitles)
 - diagnostics: run logs print transcript coverage and source distribution (`youtube_captions_manual`, `youtube_captions_auto`, `yt_dlp_subtitles`, `none`)
+
+### Relation column looks prewritten
+
+- behavior: relation sentence may look static if you only use seed text from `channels.yaml`
+- current architecture: relation is now evidence-first:
+  - `inferred_llm` when model inference succeeds
+  - `inferred_fallback` from observed topics/transcript coverage when LLM is unavailable
+  - `configured_seed` only as last-resort fallback
+- diagnostics: `quality_metrics.relation_source_counts` in `data/videos.json` shows how rows were produced
 
 ### Empty or stale site output
 

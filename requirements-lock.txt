@@ -1,0 +1,5 @@
+feedparser==6.0.12
+PyYAML==6.0.3
+youtube-transcript-api==1.2.4
+openai==2.34.0
+yt-dlp==2026.3.17

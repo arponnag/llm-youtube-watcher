@@ -7,6 +7,7 @@ import subprocess
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from collections import Counter
 from typing import Dict, List
 from urllib.parse import parse_qs, urlparse
 
@@ -286,6 +287,35 @@ def infer_channel_relations(rows: List[dict]) -> Dict[str, str]:
     return inferred
 
 
+def infer_channel_relations_from_evidence(rows: List[dict]) -> Dict[str, str]:
+    """
+    Evidence-first fallback: derive channel relation text from observed topics/transcript availability.
+    """
+    grouped: Dict[str, List[dict]] = {}
+    for row in rows:
+        if "error" in row:
+            continue
+        grouped.setdefault(row.get("channel_name", ""), []).append(row)
+    inferred: Dict[str, str] = {}
+    for channel_name, channel_rows in grouped.items():
+        topic_counter: Counter[str] = Counter()
+        transcript_available = 0
+        for row in channel_rows:
+            topic_counter.update([str(t) for t in row.get("topics", []) if isinstance(t, str)])
+            if row.get("transcript_available"):
+                transcript_available += 1
+        top_topics = [topic for topic, _ in topic_counter.most_common(3)]
+        if not top_topics:
+            top_topics = ["General LLM Commentary"]
+        coverage = transcript_available / len(channel_rows) if channel_rows else 0.0
+        relation = (
+            f"Recent coverage centers on {', '.join(top_topics)} "
+            f"based on transcript evidence from {transcript_available}/{len(channel_rows)} videos."
+        )
+        inferred[channel_name] = relation
+    return inferred
+
+
 def normalize_entry(channel: Channel, item: dict) -> dict:
     video_url = item.get("link", "")
     video_id = extract_video_id(video_url)
@@ -309,6 +339,8 @@ def normalize_entry(channel: Channel, item: dict) -> dict:
         "channel_handle": channel.handle,
         "speaker": channel.speaker,
         "relation_to_llm_ecosystem": channel.relation_to_llm_ecosystem,
+        "configured_relation_to_llm_ecosystem": channel.relation_to_llm_ecosystem,
+        "relation_source": "configured_seed",
         "video_id": video_id,
         "video_title": item.get("title", ""),
         "video_url": video_url,
@@ -341,22 +373,35 @@ def run() -> None:
                         "error": str(exc),
                     }
                 )
-    inferred_relations = infer_channel_relations(rows)
+    inferred_relations_llm = infer_channel_relations(rows)
+    inferred_relations_fallback = infer_channel_relations_from_evidence(rows)
     for row in rows:
-        row["relation_to_llm_ecosystem"] = inferred_relations.get(
-            row.get("channel_name", ""), row.get("relation_to_llm_ecosystem", "")
-        )
+        channel_name = row.get("channel_name", "")
+        llm_relation = inferred_relations_llm.get(channel_name, "")
+        fallback_relation = inferred_relations_fallback.get(channel_name, "")
+        if llm_relation:
+            row["relation_to_llm_ecosystem"] = llm_relation
+            row["relation_source"] = "inferred_llm"
+        elif fallback_relation:
+            row["relation_to_llm_ecosystem"] = fallback_relation
+            row["relation_source"] = "inferred_fallback"
+        else:
+            row["relation_to_llm_ecosystem"] = row.get("configured_relation_to_llm_ecosystem", "")
+            row["relation_source"] = "configured_seed"
     rows.sort(key=lambda x: x.get("published", ""), reverse=True)
     valid_rows = [r for r in rows if "error" not in r]
     transcript_covered = sum(1 for r in valid_rows if r.get("transcript_available"))
     transcript_coverage = (transcript_covered / len(valid_rows)) if valid_rows else 0.0
     transcript_source_counts: Dict[str, int] = {}
     summary_source_counts: Dict[str, int] = {}
+    relation_source_counts: Dict[str, int] = {}
     for row in valid_rows:
         t_source = str(row.get("transcript_source", "none"))
         s_source = str(row.get("summary_source", "none"))
+        r_source = str(row.get("relation_source", "none"))
         transcript_source_counts[t_source] = transcript_source_counts.get(t_source, 0) + 1
         summary_source_counts[s_source] = summary_source_counts.get(s_source, 0) + 1
+        relation_source_counts[r_source] = relation_source_counts.get(r_source, 0) + 1
     payload = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "row_count": len(rows),
@@ -364,6 +409,7 @@ def run() -> None:
             "transcript_coverage": round(transcript_coverage, 4),
             "transcript_source_counts": transcript_source_counts,
             "summary_source_counts": summary_source_counts,
+            "relation_source_counts": relation_source_counts,
             "min_transcript_chars": MIN_TRANSCRIPT_CHARS,
             "min_transcript_coverage_target": MIN_TRANSCRIPT_COVERAGE,
         },
@@ -378,6 +424,8 @@ def run() -> None:
         transcript_source_counts,
         "| summaries:",
         summary_source_counts,
+        "| relations:",
+        relation_source_counts,
     )
     if FAIL_ON_LOW_TRANSCRIPT_COVERAGE and transcript_coverage < MIN_TRANSCRIPT_COVERAGE:
         raise RuntimeError(
