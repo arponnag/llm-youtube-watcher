@@ -22,7 +22,7 @@ class TestPipelineLogic(unittest.TestCase):
         self.assertEqual(["General LLM Commentary"], topics)
 
     @patch("src.pipeline.summarize_with_llm", return_value=("", "none"))
-    @patch("src.pipeline.transcribe_with_openai_audio", return_value=("", "none"))
+    @patch("src.pipeline.fetch_transcript_with_ytdlp", return_value=("", "none"))
     @patch("src.pipeline.fetch_transcript_text", return_value=("RAG systems help retrieval quality.", "youtube_captions_manual"))
     def test_normalize_entry_uses_fallback_summary_source(
         self, _fetch_mock, _transcribe_mock, _summarize_mock

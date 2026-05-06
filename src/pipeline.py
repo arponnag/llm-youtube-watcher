@@ -4,7 +4,6 @@ import json
 import os
 import re
 import subprocess
-import tempfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -93,37 +92,69 @@ def fetch_transcript_text(video_id: str) -> tuple[str, str]:
     return "", "none"
 
 
-def transcribe_with_openai_audio(video_url: str, video_id: str) -> tuple[str, str]:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        return "", "none"
-    with tempfile.TemporaryDirectory() as tmp:
-        audio_path = Path(tmp) / f"{video_id}.m4a"
-        cmd = [
-            "yt-dlp",
-            "-f",
-            "bestaudio[ext=m4a]/bestaudio",
-            "--no-playlist",
-            "--extract-audio",
-            "--audio-format",
-            "m4a",
-            "--output",
-            str(audio_path),
-            video_url,
-        ]
-        try:
-            proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
-            if proc.returncode != 0 or not audio_path.exists():
-                return "", "none"
-            client = OpenAI(api_key=api_key)
-            with audio_path.open("rb") as f:
-                transcript = client.audio.transcriptions.create(model="whisper-1", file=f)
-            text = (getattr(transcript, "text", "") or "").strip()
-            if text:
-                return text, "openai_whisper"
-        except Exception:
+def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str]:
+    """
+    Fetches subtitles via yt-dlp when youtube-transcript-api is unavailable.
+    Returns (transcript_text, transcript_source).
+    """
+    subtitles_dir = DATA_DIR / "tmp_subtitles"
+    subtitles_dir.mkdir(parents=True, exist_ok=True)
+    subtitle_template = subtitles_dir / f"{video_id}.%(ext)s"
+    cmd = [
+        "yt-dlp",
+        "--skip-download",
+        "--write-auto-subs",
+        "--write-subs",
+        "--sub-langs",
+        "en.*,en",
+        "--sub-format",
+        "vtt",
+        "--output",
+        str(subtitle_template),
+        video_url,
+    ]
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        if proc.returncode != 0:
             return "", "none"
+        candidates = sorted(subtitles_dir.glob(f"{video_id}*.vtt"))
+        if not candidates:
+            return "", "none"
+        raw = candidates[0].read_text(encoding="utf-8", errors="ignore")
+        lines: List[str] = []
+        for line in raw.splitlines():
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped.startswith(("WEBVTT", "Kind:", "Language:", "NOTE")):
+                continue
+            if "-->" in stripped:
+                continue
+            if stripped.isdigit():
+                continue
+            cleaned = re.sub(r"<[^>]+>", "", stripped)
+            cleaned = re.sub(r"\[[^\]]+\]", "", cleaned).strip()
+            if cleaned:
+                lines.append(cleaned)
+        text = re.sub(r"\s+", " ", " ".join(lines)).strip()
+        if text:
+            return text, "yt_dlp_subtitles"
+    except Exception:
+        return "", "none"
+    finally:
+        for file in subtitles_dir.glob(f"{video_id}*"):
+            try:
+                file.unlink()
+            except Exception:
+                pass
     return "", "none"
+
+
+def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    if not api_key or len(transcript_text) < 100:
+        return "", "none"
+    client = OpenAI(api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
 
 
 def topics_from_text(text: str, title: str) -> List[str]:
@@ -137,17 +168,6 @@ def topics_from_text(text: str, title: str) -> List[str]:
     return matches[:4]
 
 
-def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
-    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
-    api_key = deepseek_key or os.getenv("OPENAI_API_KEY")
-    if not api_key or len(transcript_text) < 100:
-        return "", "none"
-    using_deepseek = bool(deepseek_key)
-    client = (
-        OpenAI(api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
-        if using_deepseek
-        else OpenAI(api_key=api_key)
-    )
     clip = transcript_text[:10000]
     prompt = (
         "You summarize creator commentary on LLM topics.\n"
@@ -158,18 +178,14 @@ def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
     )
     try:
         resp = client.responses.create(
-            model=(
-                os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
-                if using_deepseek
-                else os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
-            ),
+            model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
             input=prompt,
             temperature=0.2,
             max_output_tokens=100,
         )
         text = (resp.output_text or "").strip()
         text = re.sub(r"\s+", " ", text)
-        return text, "deepseek" if using_deepseek else "openai"
+        return text, "deepseek"
     except Exception:
         return "", "none"
 
@@ -186,7 +202,7 @@ def normalize_entry(channel: Channel, item: dict) -> dict:
     video_id = extract_video_id(video_url)
     transcript_text, transcript_source = fetch_transcript_text(video_id)
     if not transcript_text:
-        transcript_text, transcript_source = transcribe_with_openai_audio(video_url, video_id)
+        transcript_text, transcript_source = fetch_transcript_with_ytdlp(video_url, video_id)
     topics = topics_from_text(transcript_text, item.get("title", ""))
     ai_summary, summary_source = summarize_with_llm(transcript_text, item.get("title", ""))
     summary = ai_summary or fallback_summary(transcript_text, item.get("title", ""), topics)

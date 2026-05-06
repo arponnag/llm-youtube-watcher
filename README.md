@@ -18,7 +18,7 @@ This implementation satisfies the brief by delivering:
 2. **Fetch latest videos** from YouTube RSS feed per channel
 3. **Ingest transcript evidence**
    - Try YouTube captions via `youtube-transcript-api`
-  - Fallback to AI transcription (OpenAI Whisper + `yt-dlp`) when OpenAI is enabled
+   - Fallback to `yt-dlp` subtitle extraction when captions are unavailable
 4. **Derive analytics**
    - Topic tags from transcript/title keyword map
   - Transcript-aware short summary (DeepSeek by default; fallback heuristic)
@@ -101,7 +101,7 @@ Current minimums:
 - `feedparser>=6.0.12`
 - `PyYAML>=6.0.3`
 - `youtube-transcript-api>=1.2.4`
-- `openai>=2.34.0` (SDK client used for both OpenAI and DeepSeek-compatible endpoints)
+  - `openai>=2.34.0` (SDK client used for DeepSeek-compatible endpoint calls)
 - `yt-dlp>=2026.3.17`
 
 If you need stricter reproducibility for CI or production, pin exact versions (`==`) in a lock file or a separate frozen requirements file.
@@ -126,8 +126,6 @@ python -m unittest discover -s tests -p "test_*.py"
   - `DEEPSEEK_API_KEY` (recommended default provider)
   - `DEEPSEEK_MODEL` (optional, default `deepseek-chat`)
   - `DEEPSEEK_BASE_URL` (optional, default `https://api.deepseek.com`)
-  - `OPENAI_API_KEY` (optional, only needed if you want Whisper transcription fallback)
-  - `OPENAI_MODEL` (optional, default `gpt-4.1-mini` when OpenAI is used for summaries)
   - `MAX_VIDEOS_PER_CHANNEL` (optional, default `8`)
 
 Without `DEEPSEEK_API_KEY`, the system still runs using YouTube captions and fallback summaries.
@@ -152,7 +150,6 @@ Workflow: `.github/workflows/update-and-deploy.yml`
 2. In repository settings:
    - Pages source = **GitHub Actions**
    - Add repo secret `DEEPSEEK_API_KEY` (recommended)
-   - Optional: add `OPENAI_API_KEY` only if you want OpenAI Whisper transcription fallback
 3. Run workflow **Update LLM Watcher and Deploy** once manually.
 4. Use the workflow output URL as the live public page.
 
@@ -190,7 +187,7 @@ This avoids SSH-key setup and works with standard GitHub sign-in/token auth.
 
 - behavior: row still appears, but transcript coverage decreases
 - likely causes: captions unavailable, region/video restrictions, transient fetch issues
-- action: rerun pipeline; optionally enable OpenAI + `yt-dlp` fallback path
+- action: rerun pipeline; `yt-dlp` subtitle fallback is applied automatically
 
 ### Empty or stale site output
 
