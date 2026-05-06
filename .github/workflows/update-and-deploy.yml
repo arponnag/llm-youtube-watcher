@@ -54,13 +54,25 @@ jobs:
             git push
           }
 
+  package-pages-artifact:
+    needs: update-data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
   deploy:
-    needs: update-data
+    needs: package-pages-artifact
     runs-on: ubuntu-latest
     environment:
       name: github-pages
