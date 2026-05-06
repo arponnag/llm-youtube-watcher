@@ -13,6 +13,8 @@ permissions:
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    env:
+      YTDLP_COOKIES: ${{ secrets.YTDLP_COOKIES }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,11 +28,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Prepare optional yt-dlp cookies
-        if: ${{ secrets.YTDLP_COOKIES != '' }}
+        if: ${{ env.YTDLP_COOKIES != '' }}
         run: |
           mkdir -p .tmp
           cat > .tmp/ytdlp_cookies.txt <<'EOF'
-          ${{ secrets.YTDLP_COOKIES }}
+          ${{ env.YTDLP_COOKIES }}
           EOF
           echo "YTDLP_COOKIES_FILE=.tmp/ytdlp_cookies.txt" >> "$GITHUB_ENV"
 
