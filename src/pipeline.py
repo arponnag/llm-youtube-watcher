@@ -28,6 +28,7 @@ MAX_TOTAL_VIDEOS = int(os.getenv("MAX_TOTAL_VIDEOS", "10"))
 MIN_TRANSCRIPT_CHARS = int(os.getenv("MIN_TRANSCRIPT_CHARS", "120"))
 MIN_TRANSCRIPT_COVERAGE = float(os.getenv("MIN_TRANSCRIPT_COVERAGE", "0.6"))
 FAIL_ON_LOW_TRANSCRIPT_COVERAGE = os.getenv("FAIL_ON_LOW_TRANSCRIPT_COVERAGE", "0") == "1"
+YTDLP_COOKIES_FILE = os.getenv("YTDLP_COOKIES_FILE", "").strip()
 
 TOPIC_KEYWORDS: Dict[str, List[str]] = {
     "Agents": ["agent", "autonomous", "workflow", "tool use", "browser use"],
@@ -109,6 +110,9 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
     subtitle_template = subtitles_dir / f"{video_id}.%(ext)s"
     # Use module invocation for reliability across local shells and CI runners.
     ytdlp_exec = [sys.executable, "-m", "yt_dlp"]
+    ytdlp_shared_args: List[str] = []
+    if YTDLP_COOKIES_FILE:
+        ytdlp_shared_args.extend(["--cookies", YTDLP_COOKIES_FILE])
     cmd_primary = ytdlp_exec + [
         "--skip-download",
         "--write-auto-subs",
@@ -120,7 +124,7 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
         "--output",
         str(subtitle_template),
         video_url,
-    ]
+    ] + ytdlp_shared_args
     cmd_fallback = ytdlp_exec + [
         "--skip-download",
         "--write-auto-subs",
@@ -132,7 +136,7 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
         "--output",
         str(subtitle_template),
         video_url,
-    ]
+    ] + ytdlp_shared_args
     try:
         proc_primary = subprocess.run(cmd_primary, capture_output=True, text=True, check=False)
         candidates = sorted(subtitles_dir.glob(f"{video_id}*.vtt"))
@@ -140,10 +144,16 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
             proc_fallback = subprocess.run(cmd_fallback, capture_output=True, text=True, check=False)
             candidates = sorted(subtitles_dir.glob(f"{video_id}*.vtt"))
             if proc_primary.returncode != 0 and proc_fallback.returncode != 0:
+                primary_err = (proc_primary.stderr or "").strip().splitlines()
+                fallback_err = (proc_fallback.stderr or "").strip().splitlines()
                 print(
                     f"[warn] yt-dlp failed for video {video_id} "
                     f"(primary={proc_primary.returncode}, fallback={proc_fallback.returncode})"
                 )
+                if primary_err:
+                    print(f"[warn] yt-dlp primary stderr for {video_id}: {primary_err[-1][:300]}")
+                if fallback_err:
+                    print(f"[warn] yt-dlp fallback stderr for {video_id}: {fallback_err[-1][:300]}")
                 return "", "none"
         if not candidates:
             if proc_primary.returncode != 0:

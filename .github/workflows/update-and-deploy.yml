@@ -25,11 +25,23 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Prepare optional yt-dlp cookies
+        if: ${{ secrets.YTDLP_COOKIES != '' }}
+        run: |
+          mkdir -p .tmp
+          cat > .tmp/ytdlp_cookies.txt <<'EOF'
+          ${{ secrets.YTDLP_COOKIES }}
+          EOF
+          echo "YTDLP_COOKIES_FILE=.tmp/ytdlp_cookies.txt" >> "$GITHUB_ENV"
+
       - name: Run watcher pipeline
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DEEPSEEK_MODEL: deepseek-v4-flash
           MAX_VIDEOS_PER_CHANNEL: 8
+          MAX_TOTAL_VIDEOS: 10
+          FAIL_ON_LOW_TRANSCRIPT_COVERAGE: 1
+          MIN_TRANSCRIPT_COVERAGE: 0.6
         run: python src/pipeline.py
 
       - name: Build static site

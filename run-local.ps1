@@ -1,5 +1,5 @@
 param(
-    [string]$DeepSeekApiKey = "sk-a3a23b88b92b4390b8927579c544b5ca",
+    [string]$DeepSeekApiKey = "",
     [string]$DeepSeekModel = "deepseek-v4-flash",
     [string]$DeepSeekBaseUrl = "https://api.deepseek.com"
 )
