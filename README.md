@@ -65,7 +65,7 @@ Use this if you want a clean, repeatable setup from scratch:
 
 ```powershell
 # 1) Move into the project
-cd I:\Project
+cd <path-to-your-cloned-repo>
 
 # 2) Create and activate virtual environment (first run only)
 python -m venv .venv
