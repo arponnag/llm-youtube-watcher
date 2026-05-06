@@ -18,10 +18,10 @@ This implementation satisfies the brief by delivering:
 2. **Fetch latest videos** from YouTube RSS feed per channel
 3. **Ingest transcript evidence**
    - Try YouTube captions via `youtube-transcript-api`
-   - Fallback to AI transcription (OpenAI Whisper + `yt-dlp`) when enabled
+  - Fallback to AI transcription (OpenAI Whisper + `yt-dlp`) when OpenAI is enabled
 4. **Derive analytics**
    - Topic tags from transcript/title keyword map
-   - Transcript-aware short summary (OpenAI; fallback heuristic)
+  - Transcript-aware short summary (DeepSeek by default; fallback heuristic)
 5. **Publish artifacts**
    - `data/videos.json` (normalized data)
    - `site/index.html` + `site/videos.json` (public view + supporting payload)
@@ -101,20 +101,36 @@ Current minimums:
 - `feedparser>=6.0.12`
 - `PyYAML>=6.0.3`
 - `youtube-transcript-api>=1.2.4`
-- `openai>=2.34.0`
+- `openai>=2.34.0` (SDK client used for both OpenAI and DeepSeek-compatible endpoints)
 - `yt-dlp>=2026.3.17`
 
 If you need stricter reproducibility for CI or production, pin exact versions (`==`) in a lock file or a separate frozen requirements file.
+
+For this repository, a reproducible lock file is included at `requirements-lock.txt`.
+
+- flexible install (development): `pip install -r requirements.txt`
+- reproducible install (CI/release): `pip install -r requirements-lock.txt`
+
+## Basic Regression Tests
+
+Run lightweight unit tests for topic classification and fallback summary behavior:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py"
+```
 
 ## Configuration
 
 - Channel list: `channels.yaml`
 - Environment variables:
-  - `OPENAI_API_KEY` (optional, recommended)
-  - `OPENAI_MODEL` (optional, default `gpt-4.1-mini`)
+  - `DEEPSEEK_API_KEY` (recommended default provider)
+  - `DEEPSEEK_MODEL` (optional, default `deepseek-chat`)
+  - `DEEPSEEK_BASE_URL` (optional, default `https://api.deepseek.com`)
+  - `OPENAI_API_KEY` (optional, only needed if you want Whisper transcription fallback)
+  - `OPENAI_MODEL` (optional, default `gpt-4.1-mini` when OpenAI is used for summaries)
   - `MAX_VIDEOS_PER_CHANNEL` (optional, default `8`)
 
-Without `OPENAI_API_KEY`, the system still runs using YouTube captions and fallback summaries.
+Without `DEEPSEEK_API_KEY`, the system still runs using YouTube captions and fallback summaries.
 
 ## Deploy Public Site (GitHub Pages)
 
@@ -135,7 +151,8 @@ Workflow: `.github/workflows/update-and-deploy.yml`
 1. Push this project to a **public GitHub repository**.
 2. In repository settings:
    - Pages source = **GitHub Actions**
-   - Add repo secret `OPENAI_API_KEY` (optional but strongly recommended)
+   - Add repo secret `DEEPSEEK_API_KEY` (recommended)
+   - Optional: add `OPENAI_API_KEY` only if you want OpenAI Whisper transcription fallback
 3. Run workflow **Update LLM Watcher and Deploy** once manually.
 4. Use the workflow output URL as the live public page.
 
@@ -158,11 +175,16 @@ This avoids SSH-key setup and works with standard GitHub sign-in/token auth.
 
 ## Troubleshooting
 
-### No OpenAI key configured
+### No DeepSeek key configured
 
 - behavior: pipeline still runs
 - effect: fallback summaries are used instead of model-generated summaries
-- action: set `OPENAI_API_KEY` for higher-quality transcript-aware summaries
+- action: set `DEEPSEEK_API_KEY` for higher-quality transcript-aware summaries
+
+### Regional note (Hong Kong)
+
+- OpenAI services are not always readily available or consistently accessible from Hong Kong.
+- Recommended default for this repo is DeepSeek (`DEEPSEEK_API_KEY`) to keep deployments reliable in that region.
 
 ### Transcript missing for some videos
 

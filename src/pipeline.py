@@ -137,11 +137,17 @@ def topics_from_text(text: str, title: str) -> List[str]:
     return matches[:4]
 
 
-def summarize_with_openai(transcript_text: str, title: str) -> tuple[str, str]:
-    api_key = os.getenv("OPENAI_API_KEY")
+def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
+    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
+    api_key = deepseek_key or os.getenv("OPENAI_API_KEY")
     if not api_key or len(transcript_text) < 100:
         return "", "none"
-    client = OpenAI(api_key=api_key)
+    using_deepseek = bool(deepseek_key)
+    client = (
+        OpenAI(api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
+        if using_deepseek
+        else OpenAI(api_key=api_key)
+    )
     clip = transcript_text[:10000]
     prompt = (
         "You summarize creator commentary on LLM topics.\n"
@@ -152,14 +158,18 @@ def summarize_with_openai(transcript_text: str, title: str) -> tuple[str, str]:
     )
     try:
         resp = client.responses.create(
-            model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
+            model=(
+                os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+                if using_deepseek
+                else os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+            ),
             input=prompt,
             temperature=0.2,
             max_output_tokens=100,
         )
         text = (resp.output_text or "").strip()
         text = re.sub(r"\s+", " ", text)
-        return text, "openai"
+        return text, "deepseek" if using_deepseek else "openai"
     except Exception:
         return "", "none"
 
@@ -178,8 +188,9 @@ def normalize_entry(channel: Channel, item: dict) -> dict:
     if not transcript_text:
         transcript_text, transcript_source = transcribe_with_openai_audio(video_url, video_id)
     topics = topics_from_text(transcript_text, item.get("title", ""))
-    ai_summary, summary_source = summarize_with_openai(transcript_text, item.get("title", ""))
+    ai_summary, summary_source = summarize_with_llm(transcript_text, item.get("title", ""))
     summary = ai_summary or fallback_summary(transcript_text, item.get("title", ""), topics)
+    effective_summary_source = summary_source if ai_summary else "fallback"
     published = item.get("published", "")
 
     return {
@@ -195,7 +206,7 @@ def normalize_entry(channel: Channel, item: dict) -> dict:
         "transcript_available": bool(transcript_text),
         "transcript_source": transcript_source,
         "summary": summary,
-        "summary_source": summary_source,
+        "summary_source": effective_summary_source,
         "transcript_excerpt": transcript_text[:800],
     }
 
