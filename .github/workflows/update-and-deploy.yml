@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   update-data:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, windows, yt]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,9 +31,6 @@ jobs:
           DEEPSEEK_MODEL: deepseek-v4-flash
           MAX_VIDEOS_PER_CHANNEL: 8
           MAX_TOTAL_VIDEOS: 10
-          CI_NO_SCRAPE_MODE: 1
-          REQUIRE_TRANSCRIPT_FOR_ROW: 1
-          MIN_TRANSCRIPT_BACKED_ROWS: 5
           FAIL_ON_LOW_TRANSCRIPT_COVERAGE: 1
           MIN_TRANSCRIPT_COVERAGE: 0.6
         run: python src/pipeline.py
