@@ -21,6 +21,9 @@ DATA_DIR = ROOT / "data"
 CHANNELS_FILE = ROOT / "channels.yaml"
 OUTPUT_FILE = DATA_DIR / "videos.json"
 MAX_VIDEOS_PER_CHANNEL = int(os.getenv("MAX_VIDEOS_PER_CHANNEL", "8"))
+MIN_TRANSCRIPT_CHARS = int(os.getenv("MIN_TRANSCRIPT_CHARS", "120"))
+MIN_TRANSCRIPT_COVERAGE = float(os.getenv("MIN_TRANSCRIPT_COVERAGE", "0.6"))
+FAIL_ON_LOW_TRANSCRIPT_COVERAGE = os.getenv("FAIL_ON_LOW_TRANSCRIPT_COVERAGE", "0") == "1"
 
 TOPIC_KEYWORDS: Dict[str, List[str]] = {
     "Agents": ["agent", "autonomous", "workflow", "tool use", "browser use"],
@@ -100,7 +103,7 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
     subtitles_dir = DATA_DIR / "tmp_subtitles"
     subtitles_dir.mkdir(parents=True, exist_ok=True)
     subtitle_template = subtitles_dir / f"{video_id}.%(ext)s"
-    cmd = [
+    cmd_primary = [
         "yt-dlp",
         "--skip-download",
         "--write-auto-subs",
@@ -113,11 +116,27 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
         str(subtitle_template),
         video_url,
     ]
+    cmd_fallback = [
+        "yt-dlp",
+        "--skip-download",
+        "--write-auto-subs",
+        "--write-subs",
+        "--sub-langs",
+        "all,-live_chat",
+        "--sub-format",
+        "vtt",
+        "--output",
+        str(subtitle_template),
+        video_url,
+    ]
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
-        if proc.returncode != 0:
-            return "", "none"
+        proc_primary = subprocess.run(cmd_primary, capture_output=True, text=True, check=False)
         candidates = sorted(subtitles_dir.glob(f"{video_id}*.vtt"))
+        if not candidates:
+            proc_fallback = subprocess.run(cmd_fallback, capture_output=True, text=True, check=False)
+            candidates = sorted(subtitles_dir.glob(f"{video_id}*.vtt"))
+            if proc_primary.returncode != 0 and proc_fallback.returncode != 0:
+                return "", "none"
         if not candidates:
             return "", "none"
         raw = candidates[0].read_text(encoding="utf-8", errors="ignore")
@@ -276,9 +295,13 @@ def normalize_entry(channel: Channel, item: dict) -> dict:
     topics = infer_topics_with_llm(transcript_text, item.get("title", "")) or topics_from_text(
         transcript_text, item.get("title", "")
     )
-    ai_summary, summary_source = summarize_with_llm(transcript_text, item.get("title", ""))
-    summary = ai_summary or fallback_summary(transcript_text, item.get("title", ""), topics)
-    effective_summary_source = summary_source if ai_summary else "fallback"
+    if len(transcript_text) < MIN_TRANSCRIPT_CHARS:
+        summary = "Insufficient transcript evidence for reliable summary."
+        effective_summary_source = "insufficient_transcript"
+    else:
+        ai_summary, summary_source = summarize_with_llm(transcript_text, item.get("title", ""))
+        summary = ai_summary or fallback_summary(transcript_text, item.get("title", ""), topics)
+        effective_summary_source = summary_source if ai_summary else "fallback"
     published = item.get("published", "")
 
     return {
@@ -324,13 +347,42 @@ def run() -> None:
             row.get("channel_name", ""), row.get("relation_to_llm_ecosystem", "")
         )
     rows.sort(key=lambda x: x.get("published", ""), reverse=True)
+    valid_rows = [r for r in rows if "error" not in r]
+    transcript_covered = sum(1 for r in valid_rows if r.get("transcript_available"))
+    transcript_coverage = (transcript_covered / len(valid_rows)) if valid_rows else 0.0
+    transcript_source_counts: Dict[str, int] = {}
+    summary_source_counts: Dict[str, int] = {}
+    for row in valid_rows:
+        t_source = str(row.get("transcript_source", "none"))
+        s_source = str(row.get("summary_source", "none"))
+        transcript_source_counts[t_source] = transcript_source_counts.get(t_source, 0) + 1
+        summary_source_counts[s_source] = summary_source_counts.get(s_source, 0) + 1
     payload = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "row_count": len(rows),
+        "quality_metrics": {
+            "transcript_coverage": round(transcript_coverage, 4),
+            "transcript_source_counts": transcript_source_counts,
+            "summary_source_counts": summary_source_counts,
+            "min_transcript_chars": MIN_TRANSCRIPT_CHARS,
+            "min_transcript_coverage_target": MIN_TRANSCRIPT_COVERAGE,
+        },
         "rows": rows,
     }
     OUTPUT_FILE.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Wrote {len(rows)} rows to {OUTPUT_FILE}")
+    print(
+        "Transcript coverage:",
+        f"{transcript_covered}/{len(valid_rows)} ({transcript_coverage:.1%})",
+        "| sources:",
+        transcript_source_counts,
+        "| summaries:",
+        summary_source_counts,
+    )
+    if FAIL_ON_LOW_TRANSCRIPT_COVERAGE and transcript_coverage < MIN_TRANSCRIPT_COVERAGE:
+        raise RuntimeError(
+            f"Transcript coverage {transcript_coverage:.1%} below threshold {MIN_TRANSCRIPT_COVERAGE:.1%}"
+        )
 
 
 if __name__ == "__main__":

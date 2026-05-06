@@ -23,6 +23,7 @@ This implementation satisfies the brief by delivering:
    - Topic tags inferred by DeepSeek (keyword fallback if inference fails)
    - Channel-to-LLM relation sentence inferred from each channel's recent videos
    - Transcript-aware short summary (DeepSeek by default; fallback heuristic)
+   - Quality gate marks rows as `insufficient_transcript` when transcript evidence is too short
 5. **Publish artifacts**
    - `data/videos.json` (normalized data)
    - `site/index.html` + `site/videos.json` (public view + supporting payload)
@@ -128,6 +129,9 @@ python -m unittest discover -s tests -p "test_*.py"
   - `DEEPSEEK_MODEL` (optional, default `deepseek-chat`)
   - `DEEPSEEK_BASE_URL` (optional, default `https://api.deepseek.com`)
   - `MAX_VIDEOS_PER_CHANNEL` (optional, default `8`)
+  - `MIN_TRANSCRIPT_CHARS` (optional, default `120`; below this, summary is marked insufficient)
+  - `MIN_TRANSCRIPT_COVERAGE` (optional, default `0.6`; used with strict mode)
+  - `FAIL_ON_LOW_TRANSCRIPT_COVERAGE` (optional, `1` to fail run when coverage is below threshold)
 
 Without `DEEPSEEK_API_KEY`, the system still runs using YouTube captions and fallback summaries.
 
@@ -188,7 +192,8 @@ This avoids SSH-key setup and works with standard GitHub sign-in/token auth.
 
 - behavior: row still appears, but transcript coverage decreases
 - likely causes: captions unavailable, region/video restrictions, transient fetch issues
-- action: rerun pipeline; `yt-dlp` subtitle fallback is applied automatically
+- action: rerun pipeline; `yt-dlp` subtitle fallback is applied automatically (English first, then all available subtitles)
+- diagnostics: run logs print transcript coverage and source distribution (`youtube_captions_manual`, `youtube_captions_auto`, `yt_dlp_subtitles`, `none`)
 
 ### Empty or stale site output
 

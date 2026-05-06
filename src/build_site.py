@@ -64,7 +64,8 @@ def esc(text: str) -> str:
 
 def build_row(row: dict) -> str:
     topics = ", ".join(row.get("topics", []))
-    transcript_note = "captions found" if row.get("transcript_available") else "captions unavailable"
+    transcript_source = row.get("transcript_source", "none")
+    transcript_note = transcript_source if row.get("transcript_available") else "unavailable"
     return f"""<tr>
   <td>
     <a href="{esc(row.get("video_url", "#"))}" target="_blank" rel="noopener">{esc(row.get("video_title", "Untitled"))}</a>
@@ -75,7 +76,7 @@ def build_row(row: dict) -> str:
   <td>{esc(row.get("relation_to_llm_ecosystem", ""))}</td>
   <td>
     {esc(row.get("summary", ""))}
-    <div class="tiny">Summary source: {esc(row.get("summary_source", "none"))} | Transcript: {transcript_note}</div>
+    <div class="tiny">Summary source: {esc(row.get("summary_source", "none"))} | Transcript: {esc(str(transcript_note))}</div>
   </td>
 </tr>"""
 

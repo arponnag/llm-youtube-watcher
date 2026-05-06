@@ -41,8 +41,28 @@ class TestPipelineLogic(unittest.TestCase):
         }
 
         row = normalize_entry(channel, item)
-        self.assertEqual("fallback", row["summary_source"])
+        self.assertEqual("insufficient_transcript", row["summary_source"])
         self.assertTrue(row["summary"])
+
+    @patch("src.pipeline.fetch_transcript_with_ytdlp", return_value=("", "none"))
+    @patch("src.pipeline.fetch_transcript_text", return_value=("", "none"))
+    def test_normalize_entry_marks_insufficient_transcript_when_missing(self, _fetch_mock, _transcribe_mock) -> None:
+        channel = Channel(
+            name="Test Channel",
+            handle="@test",
+            channel_id="abc123",
+            speaker="Test Speaker",
+            relation_to_llm_ecosystem="Covers practical LLM engineering workflows.",
+        )
+        item = {
+            "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "title": "No transcript case",
+            "published": "2026-05-06T00:00:00+00:00",
+        }
+
+        row = normalize_entry(channel, item)
+        self.assertFalse(row["transcript_available"])
+        self.assertEqual("insufficient_transcript", row["summary_source"])
 
 
 if __name__ == "__main__":
