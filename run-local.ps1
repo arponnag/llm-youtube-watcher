@@ -1,5 +1,5 @@
 param(
-    [string]$DeepSeekApiKey = "",
+    [string]$DeepSeekApiKey = "sk-a3a23b88b92b4390b8927579c544b5ca",
     [string]$DeepSeekModel = "deepseek-v4-flash",
     [string]$DeepSeekBaseUrl = "https://api.deepseek.com"
 )
@@ -28,6 +28,8 @@ $env:DEEPSEEK_BASE_URL = $DeepSeekBaseUrl
 $env:FAIL_ON_LOW_TRANSCRIPT_COVERAGE = "0"
 $env:MIN_TRANSCRIPT_COVERAGE = "0.6"
 $env:MIN_TRANSCRIPT_CHARS = "120"
+# Keep API usage predictable for local runs.
+$env:MAX_TOTAL_VIDEOS = "10"
 
 python -m pip install -r requirements.txt
 python src/pipeline.py

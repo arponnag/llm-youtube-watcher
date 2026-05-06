@@ -4,6 +4,8 @@ import json
 import os
 import re
 import subprocess
+import sys
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +24,7 @@ DATA_DIR = ROOT / "data"
 CHANNELS_FILE = ROOT / "channels.yaml"
 OUTPUT_FILE = DATA_DIR / "videos.json"
 MAX_VIDEOS_PER_CHANNEL = int(os.getenv("MAX_VIDEOS_PER_CHANNEL", "8"))
+MAX_TOTAL_VIDEOS = int(os.getenv("MAX_TOTAL_VIDEOS", "10"))
 MIN_TRANSCRIPT_CHARS = int(os.getenv("MIN_TRANSCRIPT_CHARS", "120"))
 MIN_TRANSCRIPT_COVERAGE = float(os.getenv("MIN_TRANSCRIPT_COVERAGE", "0.6"))
 FAIL_ON_LOW_TRANSCRIPT_COVERAGE = os.getenv("FAIL_ON_LOW_TRANSCRIPT_COVERAGE", "0") == "1"
@@ -104,8 +107,9 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
     subtitles_dir = DATA_DIR / "tmp_subtitles"
     subtitles_dir.mkdir(parents=True, exist_ok=True)
     subtitle_template = subtitles_dir / f"{video_id}.%(ext)s"
-    cmd_primary = [
-        "yt-dlp",
+    # Use module invocation for reliability across local shells and CI runners.
+    ytdlp_exec = [sys.executable, "-m", "yt_dlp"]
+    cmd_primary = ytdlp_exec + [
         "--skip-download",
         "--write-auto-subs",
         "--write-subs",
@@ -117,8 +121,7 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
         str(subtitle_template),
         video_url,
     ]
-    cmd_fallback = [
-        "yt-dlp",
+    cmd_fallback = ytdlp_exec + [
         "--skip-download",
         "--write-auto-subs",
         "--write-subs",
@@ -137,8 +140,14 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
             proc_fallback = subprocess.run(cmd_fallback, capture_output=True, text=True, check=False)
             candidates = sorted(subtitles_dir.glob(f"{video_id}*.vtt"))
             if proc_primary.returncode != 0 and proc_fallback.returncode != 0:
+                print(
+                    f"[warn] yt-dlp failed for video {video_id} "
+                    f"(primary={proc_primary.returncode}, fallback={proc_fallback.returncode})"
+                )
                 return "", "none"
         if not candidates:
+            if proc_primary.returncode != 0:
+                print(f"[warn] yt-dlp produced no subtitles for video {video_id} (rc={proc_primary.returncode})")
             return "", "none"
         raw = candidates[0].read_text(encoding="utf-8", errors="ignore")
         lines: List[str] = []
@@ -159,7 +168,8 @@ def fetch_transcript_with_ytdlp(video_url: str, video_id: str) -> tuple[str, str
         text = re.sub(r"\s+", " ", " ".join(lines)).strip()
         if text:
             return text, "yt_dlp_subtitles"
-    except Exception:
+    except Exception as exc:
+        print(f"[warn] subtitle extraction exception for video {video_id}: {exc}")
         return "", "none"
     finally:
         for file in subtitles_dir.glob(f"{video_id}*"):
@@ -184,16 +194,18 @@ def summarize_with_llm(transcript_text: str, title: str) -> tuple[str, str]:
         "Return one concise sentence (max 35 words) focused on what the speaker says."
     )
     try:
-        resp = client.responses.create(
+        resp = client.chat.completions.create(
             model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
-            input=prompt,
+            messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
-            max_output_tokens=100,
+            # DeepSeek can spend tokens on reasoning; leave enough for a visible answer.
+            max_tokens=180,
         )
-        text = (resp.output_text or "").strip()
+        text = (resp.choices[0].message.content or "").strip()
         text = re.sub(r"\s+", " ", text)
         return text, "deepseek"
-    except Exception:
+    except Exception as exc:
+        print(f"[warn] summary LLM call failed: {type(exc).__name__}: {exc}")
         return "", "none"
 
 
@@ -223,13 +235,15 @@ def infer_topics_with_llm(transcript_text: str, title: str) -> List[str]:
         'Return strict JSON only in this shape: {"topics":["Topic A","Topic B"]}'
     )
     try:
-        resp = client.responses.create(
+        resp = client.chat.completions.create(
             model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
-            input=prompt,
+            messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
-            max_output_tokens=100,
+            max_tokens=220,
         )
-        parsed = json.loads((resp.output_text or "").strip() or "{}")
+        content = (resp.choices[0].message.content or "").strip()
+        match = re.search(r"\{.*\}", content, re.DOTALL)
+        parsed = json.loads(match.group(0) if match else "{}")
         raw_topics = parsed.get("topics", [])
         if not isinstance(raw_topics, list):
             return []
@@ -239,7 +253,8 @@ def infer_topics_with_llm(transcript_text: str, title: str) -> List[str]:
             if topic not in deduped:
                 deduped.append(topic)
         return deduped[:4]
-    except Exception:
+    except Exception as exc:
+        print(f"[warn] topic LLM call failed: {type(exc).__name__}: {exc}")
         return []
 
 
@@ -270,20 +285,33 @@ def infer_channel_relations(rows: List[dict]) -> Dict[str, str]:
             f"Channel: {channel_name}\n"
             "Recent videos:\n"
             f"{chr(10).join(sample_lines)}\n\n"
-            "Focus on practical relation to LLM ecosystem themes."
+            "Focus on practical relation to LLM ecosystem themes.\n"
+            "Return plain text only, one sentence, no markdown."
         )
-        try:
-            resp = client.responses.create(
-                model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
-                input=prompt,
-                temperature=0.2,
-                max_output_tokens=70,
-            )
-            text = re.sub(r"\s+", " ", (resp.output_text or "").strip())
-            if text:
-                inferred[channel_name] = text
-        except Exception:
-            continue
+        for attempt in range(1, 4):
+            try:
+                resp = client.chat.completions.create(
+                    model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.2,
+                    # DeepSeek may use reasoning tokens first; keep enough budget for final text.
+                    max_tokens=260,
+                )
+                finish_reason = resp.choices[0].finish_reason
+                text = re.sub(r"\s+", " ", (resp.choices[0].message.content or "").strip())
+                if text:
+                    inferred[channel_name] = text
+                    break
+                print(
+                    f"[warn] relation LLM empty output for '{channel_name}' "
+                    f"(attempt {attempt}/3, finish_reason={finish_reason})"
+                )
+            except Exception as exc:
+                print(
+                    f"[warn] relation LLM call failed for '{channel_name}' "
+                    f"(attempt {attempt}/3): {type(exc).__name__}: {exc}"
+                )
+            time.sleep(0.8 * attempt)
     return inferred
 
 
@@ -308,9 +336,10 @@ def infer_channel_relations_from_evidence(rows: List[dict]) -> Dict[str, str]:
         if not top_topics:
             top_topics = ["General LLM Commentary"]
         coverage = transcript_available / len(channel_rows) if channel_rows else 0.0
+        topics_phrase = ", ".join(top_topics)
         relation = (
-            f"Recent coverage centers on {', '.join(top_topics)} "
-            f"based on transcript evidence from {transcript_available}/{len(channel_rows)} videos."
+            f"In recent uploads, this channel mostly discusses {topics_phrase}. "
+            f"This is based on transcript evidence from {transcript_available} of {len(channel_rows)} videos."
         )
         inferred[channel_name] = relation
     return inferred
@@ -359,8 +388,12 @@ def run() -> None:
     channels = load_channels()
     rows: List[dict] = []
     for channel in channels:
+        if len(rows) >= MAX_TOTAL_VIDEOS:
+            break
         items = fetch_recent_videos(channel.channel_id)
         for item in items:
+            if len(rows) >= MAX_TOTAL_VIDEOS:
+                break
             try:
                 rows.append(normalize_entry(channel, item))
             except Exception as exc:

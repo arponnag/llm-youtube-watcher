@@ -23,6 +23,7 @@ Speaker attribution is stable from configuration, while relation output is now e
 
 - The pipeline (`src/pipeline.py`) polls YouTube RSS feeds by channel id.
 - It collects the latest `N` videos per channel (`MAX_VIDEOS_PER_CHANNEL`).
+- It enforces a global cap (`MAX_TOTAL_VIDEOS`, currently 10 by default) to keep LLM/token usage predictable per run.
 - Videos are normalized into a single schema and sorted by publish date.
 
 ## 3) Transcript / Caption Evidence
@@ -53,6 +54,7 @@ Each record stores `transcript_available` and `transcript_source` for auditabili
 ## 5) Transcript-Aware Summarization
 
 - If `DEEPSEEK_API_KEY` is configured, the pipeline summarizes transcript excerpts with a DeepSeek-compatible endpoint prompt focused on speaker claims.
+- The implementation uses chat-completions calls with retries/guardrails where needed for robust output extraction.
 - If not, it falls back to deterministic transcript-based/excerpt summary behavior.
 
 This keeps output operational under constrained environments while improving fidelity when AI is available.

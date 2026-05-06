@@ -143,11 +143,17 @@ python -m unittest discover -s tests -p "test_*.py"
   - `DEEPSEEK_MODEL` (optional, default `deepseek-v4-flash`)
   - `DEEPSEEK_BASE_URL` (optional, default `https://api.deepseek.com`)
   - `MAX_VIDEOS_PER_CHANNEL` (optional, default `8`)
+  - `MAX_TOTAL_VIDEOS` (optional, default `10`; hard cap across all channels per run)
   - `MIN_TRANSCRIPT_CHARS` (optional, default `120`; below this, summary is marked insufficient)
   - `MIN_TRANSCRIPT_COVERAGE` (optional, default `0.6`; used with strict mode)
   - `FAIL_ON_LOW_TRANSCRIPT_COVERAGE` (optional, `1` to fail run when coverage is below threshold)
 
 Without `DEEPSEEK_API_KEY`, the system still runs using YouTube captions and fallback summaries.
+
+Local wrapper note:
+
+- `run-local.ps1` sets `MAX_TOTAL_VIDEOS=10` by default to control API usage.
+- Override in-session if needed (for example, `5`): `$env:MAX_TOTAL_VIDEOS="5"`.
 
 ## Deploy Public Site (GitHub Pages)
 
