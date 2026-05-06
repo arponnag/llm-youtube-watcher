@@ -1,6 +1,17 @@
 {
-  "generated_at_utc": "2026-05-06T12:50:12.956762+00:00",
+  "generated_at_utc": "2026-05-06T12:57:27.996135+00:00",
   "row_count": 24,
+  "quality_metrics": {
+    "transcript_coverage": 0.0,
+    "transcript_source_counts": {
+      "none": 24
+    },
+    "summary_source_counts": {
+      "insufficient_transcript": 24
+    },
+    "min_transcript_chars": 120,
+    "min_transcript_coverage_target": 0.6
+  },
   "rows": [
     {
       "channel_name": "Two Minute Papers",
@@ -16,8 +27,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA's New AI Turns One Photo Into A World That Never Breaks'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -34,8 +45,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Sakana AI’s God Simulator Is Brilliant'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -52,8 +63,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses Multimodal in the context of 'Solved: The Bug That Haunted AI Video For Years'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -70,8 +81,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA's New AI Broke My Brain'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -88,8 +99,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'DeepMind’s New AI: A Gift To Humanity'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -106,8 +117,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Anthropic’s New AI Solves Problems…By Cheating'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -124,8 +135,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA’s New AI Shouldn’t Work…But It Does'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -142,8 +153,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA’s New AI Just Changed Everything'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -160,8 +171,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'I BUILT A FULLY AUTOMATIC MANSPLAINER'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -178,8 +189,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Traditional X-Mas Stream'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -196,8 +207,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Traditional Holiday Live Stream'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -214,8 +225,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'TiDAR: Think in Diffusion, Talk in Autoregression (Paper Analysis)'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -232,8 +243,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Titans: Learning to Memorize at Test Time (Paper Analysis)'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -250,8 +261,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of '[Paper Analysis] The Free Transformer (and some Variational Autoencoder stuff)'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -268,8 +279,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses Multimodal in the context of '[Video Response] What Cloudflare's code mode misses about MCP and tool calling'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -287,8 +298,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses RAG, Benchmarks & Eval in the context of '[Paper Analysis] On the Theoretical Limitations of Embedding-Based Retrieval (Warning: Rant)'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -305,8 +316,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'How I use LLMs'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -323,8 +334,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Deep Dive into LLMs like ChatGPT'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -341,8 +352,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Let's reproduce GPT-2 (124M)'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -359,8 +370,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Let's build the GPT Tokenizer'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -377,8 +388,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of '[1hr Talk] Intro to Large Language Models'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -395,8 +406,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Let's build GPT: from scratch, in code, spelled out.'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -413,8 +424,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Building makemore Part 5: Building a WaveNet'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     },
     {
@@ -431,8 +442,8 @@
       ],
       "transcript_available": false,
       "transcript_source": "none",
-      "summary": "Discusses General LLM Commentary in the context of 'Building makemore Part 4: Becoming a Backprop Ninja'.",
-      "summary_source": "fallback",
+      "summary": "Insufficient transcript evidence for reliable summary.",
+      "summary_source": "insufficient_transcript",
       "transcript_excerpt": ""
     }
   ]
