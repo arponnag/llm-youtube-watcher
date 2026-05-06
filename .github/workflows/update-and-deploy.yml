@@ -13,8 +13,6 @@ permissions:
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    env:
-      YTDLP_COOKIES: ${{ secrets.YTDLP_COOKIES }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,13 +26,17 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Prepare optional yt-dlp cookies
-        if: ${{ env.YTDLP_COOKIES != '' }}
+        env:
+          YTDLP_COOKIES: ${{ secrets.YTDLP_COOKIES }}
         run: |
           mkdir -p .tmp
-          cat > .tmp/ytdlp_cookies.txt <<'EOF'
-          ${{ env.YTDLP_COOKIES }}
-          EOF
-          echo "YTDLP_COOKIES_FILE=.tmp/ytdlp_cookies.txt" >> "$GITHUB_ENV"
+          if [ -n "${YTDLP_COOKIES:-}" ]; then
+            printf '%s\n' "$YTDLP_COOKIES" > .tmp/ytdlp_cookies.txt
+            echo "YTDLP_COOKIES_FILE=.tmp/ytdlp_cookies.txt" >> "$GITHUB_ENV"
+            echo "yt-dlp cookies file prepared."
+          else
+            echo "::warning::YTDLP_COOKIES secret is empty; YouTube may block transcript extraction on GitHub-hosted runners."
+          fi
 
       - name: Run watcher pipeline
         env:
