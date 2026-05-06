@@ -3,7 +3,7 @@
 Automated pipeline that monitors popular LLM-focused YouTube channels, extracts what speakers actually say from captions/transcripts, classifies LLM topics, and publishes a continuously updated public table.
 
 ## Notes:
-It's recommended to run this locally as YouTube may block transcript extraction on GitHub-hosted runners.
+It's recommended to run this locally as YouTube may block transcript extraction on GitHub-hosted runners. However, this can be fixed if you use locally hosted runner.
 
 ## Problem Fit
 
