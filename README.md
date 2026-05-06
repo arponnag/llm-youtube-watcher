@@ -52,6 +52,60 @@ python src/build_site.py
 
 Open `site/index.html` in a browser.
 
+## Detailed Local Setup (Windows PowerShell)
+
+Use this if you want a clean, repeatable setup from scratch:
+
+```powershell
+# 1) Move into the project
+cd I:\Project
+
+# 2) Create and activate virtual environment
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 3) Install dependencies
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+# 4) Run pipeline and build site
+python src/pipeline.py
+python src/build_site.py
+```
+
+After running:
+
+- dataset output: `data/videos.json`
+- reviewer site: `site/index.html`
+- site payload: `site/videos.json`
+
+## End-to-End Run Checklist
+
+Use this checklist whenever you regenerate outputs:
+
+1. Verify channels are configured in `channels.yaml`.
+2. Run `python src/pipeline.py`.
+3. Confirm `data/videos.json` was updated.
+4. Run `python src/build_site.py`.
+5. Open `site/index.html` and confirm:
+   - generated timestamp is current,
+   - rows are present,
+   - transcript source and summary source columns are populated.
+
+## Dependency Policy
+
+`requirements.txt` uses minimum versions (`>=`) that are known to work with this project.
+
+Current minimums:
+
+- `feedparser>=6.0.12`
+- `PyYAML>=6.0.3`
+- `youtube-transcript-api>=1.2.4`
+- `openai>=2.34.0`
+- `yt-dlp>=2026.3.17`
+
+If you need stricter reproducibility for CI or production, pin exact versions (`==`) in a lock file or a separate frozen requirements file.
+
 ## Configuration
 
 - Channel list: `channels.yaml`
@@ -84,6 +138,43 @@ Workflow: `.github/workflows/update-and-deploy.yml`
    - Add repo secret `OPENAI_API_KEY` (optional but strongly recommended)
 3. Run workflow **Update LLM Watcher and Deploy** once manually.
 4. Use the workflow output URL as the live public page.
+
+## GitHub Push Setup (Common Fix)
+
+If `git push` fails with:
+
+`git@github.com: Permission denied (publickey).`
+
+your remote is using SSH and your local machine likely does not have a registered SSH key yet.
+
+Quick fix (use HTTPS remote):
+
+```powershell
+git remote set-url origin https://github.com/<your-user>/<your-repo>.git
+git push -u origin main
+```
+
+This avoids SSH-key setup and works with standard GitHub sign-in/token auth.
+
+## Troubleshooting
+
+### No OpenAI key configured
+
+- behavior: pipeline still runs
+- effect: fallback summaries are used instead of model-generated summaries
+- action: set `OPENAI_API_KEY` for higher-quality transcript-aware summaries
+
+### Transcript missing for some videos
+
+- behavior: row still appears, but transcript coverage decreases
+- likely causes: captions unavailable, region/video restrictions, transient fetch issues
+- action: rerun pipeline; optionally enable OpenAI + `yt-dlp` fallback path
+
+### Empty or stale site output
+
+- verify `python src/pipeline.py` succeeded before `python src/build_site.py`
+- check that `data/videos.json` has recent `generated_at_utc`
+- rebuild site and refresh browser cache
 
 ## Big-Scale Refinement Plan
 
