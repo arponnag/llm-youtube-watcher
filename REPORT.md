@@ -15,9 +15,9 @@ Design and host an automated monitoring system for popular LLM-focused YouTube c
 - Each channel includes:
   - canonical channel id
   - speaker attribution
-  - relation-to-ecosystem description
+  - a seed relation description used only as a last-resort fallback
 
-This design ensures that speaker and relationship columns remain stable and explainable.
+Speaker attribution is stable from configuration, while relation output is now evidence-first and source-labeled.
 
 ## 2) Collection Pipeline
 
@@ -31,7 +31,7 @@ The pipeline follows a reliability-first sequence:
 
 1. attempt manual English captions,
 2. fallback to auto-generated English captions,
-3. fallback to AI transcription (OpenAI Whisper) when API key is available.
+3. fallback to subtitle extraction with `yt-dlp` (English first, then broader subtitle fallback).
 
 Each record stores `transcript_available` and `transcript_source` for auditability.
 
@@ -52,12 +52,28 @@ Each record stores `transcript_available` and `transcript_source` for auditabili
 
 ## 5) Transcript-Aware Summarization
 
-- If `OPENAI_API_KEY` is configured, the pipeline summarizes transcript excerpts with an LLM prompt focused on speaker claims.
+- If `DEEPSEEK_API_KEY` is configured, the pipeline summarizes transcript excerpts with a DeepSeek-compatible endpoint prompt focused on speaker claims.
 - If not, it falls back to deterministic transcript-based/excerpt summary behavior.
 
 This keeps output operational under constrained environments while improving fidelity when AI is available.
 
-## 6) Public Output and Refresh
+## 6) Channel-Relation Inference and Transparency
+
+The `relation_to_llm_ecosystem` field is generated with explicit source tracking:
+
+1. `inferred_llm`: sentence inferred from each channel's recent videos when model inference succeeds.
+2. `inferred_fallback`: deterministic sentence inferred from observed topic distribution + transcript coverage when LLM inference is unavailable.
+3. `configured_seed`: seeded text from `channels.yaml`, used only when neither inference path can produce output.
+
+Each row includes:
+
+- `relation_to_llm_ecosystem`
+- `configured_relation_to_llm_ecosystem`
+- `relation_source`
+
+Run-level metrics include `quality_metrics.relation_source_counts` for auditability.
+
+## 7) Public Output and Refresh
 
 - Dataset output: `data/videos.json`
 - Browser output: `site/index.html`
@@ -94,6 +110,7 @@ Local pipeline execution produced:
 - normalized output dataset generation,
 - static table build suitable for browser review,
 - transcript-source annotations per row,
+- relation-source annotations per row (`inferred_llm`, `inferred_fallback`, `configured_seed`),
 - scheduled deployment workflow ready for public hosting.
 
 Artifacts generated during local run:
@@ -138,22 +155,22 @@ To evolve from assessment prototype to large-scale production:
 
 # Risks and Mitigations
 
-- **Caption unavailability**: mitigated by Whisper fallback.
-- **API quota/cost drift**: mitigated by caching, dedup, and fallback-only transcription.
+- **Caption unavailability**: mitigated by `yt-dlp` subtitle fallback.
+- **API unavailability/rate limits**: mitigated by deterministic fallbacks for summaries, topics, and channel relation inference.
 - **Platform/API changes**: mitigated by modular adapters and integration tests.
 
 # Reproducibility Notes
 
 Run locally:
 
-1. install dependencies (`pip install -r requirements.txt`)
-2. run `python src/pipeline.py`
-3. run `python src/build_site.py`
+1. create/activate virtual env
+2. set `DEEPSEEK_API_KEY` in terminal environment
+3. run `.\run-local.ps1 -DeepSeekApiKey $env:DEEPSEEK_API_KEY` (or run pipeline + build manually)
 4. open `site/index.html`
 
 For public continuous output:
 
 1. push repository to GitHub,
 2. enable Pages (GitHub Actions source),
-3. optionally set `OPENAI_API_KEY` in repo secrets,
+3. set `DEEPSEEK_API_KEY` in repo secrets,
 4. run workflow manually once, then rely on schedule.

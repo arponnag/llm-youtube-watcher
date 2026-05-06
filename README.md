@@ -21,7 +21,7 @@ This implementation satisfies the brief by delivering:
    - Fallback to `yt-dlp` subtitle extraction when captions are unavailable
 4. **Derive analytics**
    - Topic tags inferred by DeepSeek (keyword fallback if inference fails)
-   - Channel-to-LLM relation sentence inferred from each channel's recent videos
+   - Channel-to-LLM relation sentence generated with explicit source labeling (`inferred_llm`, `inferred_fallback`, `configured_seed`)
    - Transcript-aware short summary (DeepSeek by default; fallback heuristic)
    - Quality gate marks rows as `insufficient_transcript` when transcript evidence is too short
 5. **Publish artifacts**
