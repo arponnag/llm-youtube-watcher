@@ -1,0 +1,439 @@
+{
+  "generated_at_utc": "2026-05-06T09:07:20.057778+00:00",
+  "row_count": 24,
+  "rows": [
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "eCw33snvoNI",
+      "video_title": "NVIDIA's New AI Turns One Photo Into A World That Never Breaks",
+      "video_url": "https://www.youtube.com/watch?v=eCw33snvoNI",
+      "published": "2026-05-03T17:02:48+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA's New AI Turns One Photo Into A World That Never Breaks'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "QzZ4VwDHAT4",
+      "video_title": "Sakana AI’s God Simulator Is Brilliant",
+      "video_url": "https://www.youtube.com/watch?v=QzZ4VwDHAT4",
+      "published": "2026-05-01T16:43:34+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Sakana AI’s God Simulator Is Brilliant'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "yzajLZXh9JU",
+      "video_title": "Solved: The Bug That Haunted AI Video For Years",
+      "video_url": "https://www.youtube.com/watch?v=yzajLZXh9JU",
+      "published": "2026-04-28T17:16:01+00:00",
+      "topics": [
+        "Multimodal"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses Multimodal in the context of 'Solved: The Bug That Haunted AI Video For Years'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "Xf_v62TQOx4",
+      "video_title": "NVIDIA's New AI Broke My Brain",
+      "video_url": "https://www.youtube.com/watch?v=Xf_v62TQOx4",
+      "published": "2026-04-25T17:09:47+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA's New AI Broke My Brain'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "Sk9tvyRSCgY",
+      "video_title": "DeepMind’s New AI: A Gift To Humanity",
+      "video_url": "https://www.youtube.com/watch?v=Sk9tvyRSCgY",
+      "published": "2026-04-16T17:44:48+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'DeepMind’s New AI: A Gift To Humanity'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "Ersv1ogj7Jo",
+      "video_title": "Anthropic’s New AI Solves Problems…By Cheating",
+      "video_url": "https://www.youtube.com/watch?v=Ersv1ogj7Jo",
+      "published": "2026-04-14T14:50:00+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Anthropic’s New AI Solves Problems…By Cheating'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "mFSFvKquXwI",
+      "video_title": "NVIDIA’s New AI Shouldn’t Work…But It Does",
+      "video_url": "https://www.youtube.com/watch?v=mFSFvKquXwI",
+      "published": "2026-04-11T16:23:48+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA’s New AI Shouldn’t Work…But It Does'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Two Minute Papers",
+      "channel_handle": "@TwoMinutePapers",
+      "speaker": "Károly Zsolnai-Fehér",
+      "relation_to_llm_ecosystem": "Accessible research storytelling that links multimodal and LLM progress to applied use cases.",
+      "video_id": "ZQAz_HrUq68",
+      "video_title": "NVIDIA’s New AI Just Changed Everything",
+      "video_url": "https://www.youtube.com/watch?v=ZQAz_HrUq68",
+      "published": "2026-04-07T17:38:09+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'NVIDIA’s New AI Just Changed Everything'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "xHi8PUIVyoo",
+      "video_title": "I BUILT A FULLY AUTOMATIC MANSPLAINER",
+      "video_url": "https://www.youtube.com/watch?v=xHi8PUIVyoo",
+      "published": "2026-03-06T22:07:33+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'I BUILT A FULLY AUTOMATIC MANSPLAINER'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "Dr6jw-WAd9E",
+      "video_title": "Traditional X-Mas Stream",
+      "video_url": "https://www.youtube.com/watch?v=Dr6jw-WAd9E",
+      "published": "2025-12-29T03:44:20+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Traditional X-Mas Stream'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "DNajvkqfobY",
+      "video_title": "Traditional Holiday Live Stream",
+      "video_url": "https://www.youtube.com/watch?v=DNajvkqfobY",
+      "published": "2025-12-28T12:41:54+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Traditional Holiday Live Stream'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "taCVT5vDAk0",
+      "video_title": "TiDAR: Think in Diffusion, Talk in Autoregression (Paper Analysis)",
+      "video_url": "https://www.youtube.com/watch?v=taCVT5vDAk0",
+      "published": "2025-12-27T14:33:29+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'TiDAR: Think in Diffusion, Talk in Autoregression (Paper Analysis)'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "v67plFw1nMw",
+      "video_title": "Titans: Learning to Memorize at Test Time (Paper Analysis)",
+      "video_url": "https://www.youtube.com/watch?v=v67plFw1nMw",
+      "published": "2025-12-14T16:22:15+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Titans: Learning to Memorize at Test Time (Paper Analysis)'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "Nao16-6l6dQ",
+      "video_title": "[Paper Analysis] The Free Transformer (and some Variational Autoencoder stuff)",
+      "video_url": "https://www.youtube.com/watch?v=Nao16-6l6dQ",
+      "published": "2025-11-01T17:39:06+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of '[Paper Analysis] The Free Transformer (and some Variational Autoencoder stuff)'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "0bpYCxv2qhw",
+      "video_title": "[Video Response] What Cloudflare's code mode misses about MCP and tool calling",
+      "video_url": "https://www.youtube.com/watch?v=0bpYCxv2qhw",
+      "published": "2025-10-19T10:58:51+00:00",
+      "topics": [
+        "Multimodal"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses Multimodal in the context of '[Video Response] What Cloudflare's code mode misses about MCP and tool calling'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Yannic Kilcher",
+      "channel_handle": "@YannicKilcher",
+      "speaker": "Yannic Kilcher",
+      "relation_to_llm_ecosystem": "Paper deep-dives and model analysis that connect research claims to practitioner understanding.",
+      "video_id": "zKohTkN0Fyk",
+      "video_title": "[Paper Analysis] On the Theoretical Limitations of Embedding-Based Retrieval (Warning: Rant)",
+      "video_url": "https://www.youtube.com/watch?v=zKohTkN0Fyk",
+      "published": "2025-10-11T16:07:41+00:00",
+      "topics": [
+        "RAG",
+        "Benchmarks & Eval"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses RAG, Benchmarks & Eval in the context of '[Paper Analysis] On the Theoretical Limitations of Embedding-Based Retrieval (Warning: Rant)'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "EWvNQjAaOHw",
+      "video_title": "How I use LLMs",
+      "video_url": "https://www.youtube.com/watch?v=EWvNQjAaOHw",
+      "published": "2025-02-27T22:29:56+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'How I use LLMs'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "7xTGNNLPyMI",
+      "video_title": "Deep Dive into LLMs like ChatGPT",
+      "video_url": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
+      "published": "2025-02-05T18:23:47+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Deep Dive into LLMs like ChatGPT'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "l8pRSuU81PU",
+      "video_title": "Let's reproduce GPT-2 (124M)",
+      "video_url": "https://www.youtube.com/watch?v=l8pRSuU81PU",
+      "published": "2024-06-09T23:31:35+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Let's reproduce GPT-2 (124M)'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "zduSFxRajkE",
+      "video_title": "Let's build the GPT Tokenizer",
+      "video_url": "https://www.youtube.com/watch?v=zduSFxRajkE",
+      "published": "2024-02-20T17:11:35+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Let's build the GPT Tokenizer'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "zjkBMFhNj_g",
+      "video_title": "[1hr Talk] Intro to Large Language Models",
+      "video_url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+      "published": "2023-11-23T02:27:48+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of '[1hr Talk] Intro to Large Language Models'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "kCc8FmEb1nY",
+      "video_title": "Let's build GPT: from scratch, in code, spelled out.",
+      "video_url": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+      "published": "2023-01-17T16:33:27+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Let's build GPT: from scratch, in code, spelled out.'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "t3YJ5hKiMQ0",
+      "video_title": "Building makemore Part 5: Building a WaveNet",
+      "video_url": "https://www.youtube.com/watch?v=t3YJ5hKiMQ0",
+      "published": "2022-11-21T00:32:48+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Building makemore Part 5: Building a WaveNet'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    },
+    {
+      "channel_name": "Andrej Karpathy",
+      "channel_handle": "@AndrejKarpathy",
+      "speaker": "Andrej Karpathy",
+      "relation_to_llm_ecosystem": "Research and educational bridge between deep learning fundamentals and practical LLM engineering.",
+      "video_id": "q8SA3rM6ckI",
+      "video_title": "Building makemore Part 4: Becoming a Backprop Ninja",
+      "video_url": "https://www.youtube.com/watch?v=q8SA3rM6ckI",
+      "published": "2022-10-11T17:56:19+00:00",
+      "topics": [
+        "General LLM Commentary"
+      ],
+      "transcript_available": false,
+      "transcript_source": "none",
+      "summary": "Discusses General LLM Commentary in the context of 'Building makemore Part 4: Becoming a Backprop Ninja'.",
+      "summary_source": "none",
+      "transcript_excerpt": ""
+    }
+  ]
+}

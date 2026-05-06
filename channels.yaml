@@ -1,0 +1,26 @@
+channels:
+  - name: Andrej Karpathy
+    handle: "@AndrejKarpathy"
+    channel_id: "UCXUPKJO5MZQN11PqgIvyuvQ"
+    speaker: "Andrej Karpathy"
+    relation_to_llm_ecosystem: "Research and educational bridge between deep learning fundamentals and practical LLM engineering."
+  - name: Yannic Kilcher
+    handle: "@YannicKilcher"
+    channel_id: "UCZHmQk67mSJgfCCTn7xBfew"
+    speaker: "Yannic Kilcher"
+    relation_to_llm_ecosystem: "Paper deep-dives and model analysis that connect research claims to practitioner understanding."
+  - name: TheAIGRID
+    handle: "@TheAIGRID"
+    channel_id: "UCjPKAec8O44y3cVv5fIZ4Ow"
+    speaker: "Matt Wolfe"
+    relation_to_llm_ecosystem: "Fast-moving product and tooling updates spanning open-source and frontier model launches."
+  - name: AI Explained
+    handle: "@AIExplained-official"
+    channel_id: "UCIgNWXsJc88v3U9A8jFEXvw"
+    speaker: "AI Explained host"
+    relation_to_llm_ecosystem: "Interprets capability trends, safety implications, and deployment impacts for a broad audience."
+  - name: Two Minute Papers
+    handle: "@TwoMinutePapers"
+    channel_id: "UCbfYPyITQ-7l4upoX8nvctg"
+    speaker: "Károly Zsolnai-Fehér"
+    relation_to_llm_ecosystem: "Accessible research storytelling that links multimodal and LLM progress to applied use cases."
